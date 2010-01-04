@@ -1,0 +1,125 @@
+PortSystem				1.0
+
+name			  			ruby
+version						1.8.7-p174
+revision					1
+
+categories				lang ruby
+maintainers				raggi
+
+description				Powerful and clean object-oriented scripting language
+long_description	Ruby is the interpreted scripting language for quick \
+									and easy object-oriented programming. It has many \
+									features to process text files and to do system \
+									management tasks (as in Perl). It is simple, \
+									straight-forward, extensible, and portable.
+homepage					http://www.ruby-lang.org/
+master_sites			ruby:1.8
+				
+dist_subdir				ruby
+checksums					md5 88c45aaf627b4404e5e4273cb03ba2ee \
+									rmd160 f854d456003af1e31d50330c88c3cb152c434249 \
+									sha1 9e84b49ad545ad54b8e7dc3c227eaaefeb1041aa
+
+use_bzip2					yes
+
+platforms					darwin
+
+depends_lib				port:libiconv \
+									port:readline \
+									port:openssl \
+									port:zlib \
+									port:ncurses
+
+# vendordir: enable vendor-specific.rb
+# #3604: gcc4 fails to detect linking at configure
+# #19050: use $(CC) not cc, this change has been merged at ruby-1.8 trunk
+# #22361: Hash equivalence fails when a value is a Fixnum >= 2**29 or 2**61
+patchfiles		patch-vendordir.diff \
+							patch-bug3604.diff \
+							patch-bug19050.diff \
+							patch-bug22361.diff
+
+use_parallel_build		yes
+
+configure.args	--enable-shared \
+								--mandir="${prefix}/share/man" \
+								--disable-pthread \
+								--without-tk \
+								--with-vendordir=${prefix}/lib/ruby/vendor_ruby
+
+# ignore minor version for archdir, like i686-darwin9
+configure.env	UNAME_RELEASE=${os.major}
+
+if {![variant_isset universal] && [info exists build_arch] && $build_arch != ""} {
+	configure.env-append ARCH_FLAG="-arch ${build_arch}"
+}
+
+destroot.target	install install-doc
+post-destroot {
+	foreach type {site vendor} {
+		set libdir ${destroot}${prefix}/lib/ruby/${type}_ruby
+		xinstall -m 0755 -d ${libdir}
+		
+		# special file for installation control of modules
+		xinstall -m 0644 ${filespath}/${type}-specific.rb ${libdir}
+		
+		# prevent empty site/vendor directories from being pruned
+		foreach subdir [exec find ${libdir} -type d -empty] {
+			destroot.keepdirs-append ${subdir}
+		}
+	}
+    # error at activate, for these case sensitive files
+	foreach rdoc {Exception2MessageMapper/fail-i.yaml \
+				  REXML/Parsers/XPathParser/predicate-i.yaml} {
+		if {[file exists ${destroot}${prefix}/share/ri/1.8/system/${rdoc}]} {
+			delete ${destroot}${prefix}/share/ri/1.8/system/${rdoc}
+		}
+	}
+}
+
+variant universal {
+	configure.args-delete --disable-dependency-tracking
+	build.target-append  EXTLDFLAGS="${configure.universal_ldflags}" CFLAGS="${configure.universal_cflags}"	
+}
+
+platform darwin {
+	# for proper rdoc/ri creation, make sure to link to destroot libruby.dylib
+	destroot.env	DYLD_LIBRARY_PATH=${destroot}${prefix}/lib
+}
+
+platform darwin 7 {
+	# pthreads is being called with an unavailable function call
+	configure.args-delete	--enable-pthread
+}
+
+variant tk conflicts mactk description "enable tk support" {
+	configure.args-delete	--without-tk --disable-pthread
+	configure.args-append	--with-tk --enable-pthread
+	depends_lib-append		port:tcl port:tk
+}
+
+variant mactk conflicts tk description "enable MacTk (Tk.framework without X11) support" {
+	configure.args-delete	--without-tk --disable-thread
+	configure.args-append	--enable-tcltk-framework --enable-pthread
+}
+
+variant thread_hooks description "apply Apple's thread_hooks patch" {
+	patchfiles-append		patch-thread-hooks.diff
+}
+
+variant no_doc description "do not install rdoc documents" {
+	destroot.target-delete	install-doc
+}
+
+variant gdb description "build debugging symbols" {
+	configure.cflags-append -ggdb3
+}
+
+default_variants	+thread_hooks +gdb
+
+livecheck.type	regex
+livecheck.url	http://ftp.ruby-lang.org/pub/ruby/1.8/
+livecheck.regex	{ruby-(\d+(?:\.\d+)*(?:-p\d+))}
+
+test.run	yes
