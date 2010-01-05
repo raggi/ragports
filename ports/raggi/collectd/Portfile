@@ -11,7 +11,7 @@ revision          0
 categories        net sysutils
 maintainers       raggi
 
-description       collectd collects system performance statistics.
+description       Systems & network statistics collection daemon
 long_description  collectd is a daemon which collects system performance \
                   statistics periodically and provides mechanisms to store \
                   the values in a variety of ways, for example in RRD files. \
@@ -30,6 +30,124 @@ checksums         md5    5b2e5f57716f2485a3b4eb57774a3818 \
                   sha1   7a3e0b28248eb061c30221e19fee19c6ba303fb9 \
                   rmd160 225fdc708c745cf35e40e519188e8a72cc35524c
 
-# TODO
-# depends_lib
-# configure.args
+depends_lib       port:pkgconfig
+
+# TODO go for collectdmon? launchctl can do this for us, but, opinions?
+startupitem.create      yes
+startupitem.name        ${name}
+startupitem.executable  "${prefix}/bin/${name}"
+
+post-destroot {
+  file mkdir ${destroot}${prefix}/var/lib/${name}
+}
+
+variant debug description "enable debugging" {
+  configure.args-append --enable-debug
+}
+
+variant nodaemon description "disable daemon" {
+  configure.args-append --disable-daemon
+}
+
+# Plugin dependency variants:
+
+variant apache description "enable apache plugin" {
+  # configure.depends_lib-append port:apache2
+  configure.depends_lib-append port:curl
+}
+
+variant ascent description "enable ascent plugin" {
+  configure.depends_lib-append port:curl port:libxml2
+}
+
+variant bind9 description "enable bind plugin" {
+  configure.depends_lib-append port:bind9
+}
+
+variant curl description "enable curl plugin" {
+  configure.depends_lib-append port:curl
+}
+
+variant curl_json description "enable curl_json plugin" {
+  configure.depends_lib-append port:curl port:yajl
+}
+
+variant dbi description "enable dbi plugin" {
+  configure.depends_lib-append port:libdbi
+}
+
+variant dns description "enable dns plugin" {
+  configure.depends_lib-append port:libpcap
+}
+
+variant memcached description "enable memcached plugin" {
+  configure.depends_lib-append port:libmemcached
+}
+
+variant mysql5 description "enable mysql plugin" {
+  configure.depends_lib-append port:mysql5
+}
+
+variant network description "enable network plugin" {
+  configure.depends_lib-append port:libgcrypt
+}
+
+variant nginx description "enable nginx plugin" {
+  # configure.depends_lib-append port:nginx
+  configure.depends_lib-append port:curl
+}
+
+variant ntpd description "enable ntpd plugin" {
+  configure.depends_lib-append port:openntpd
+}
+
+variant nut description "enable nut plugin" {
+  configure.depends_lib-append port:nut
+}
+
+variant openvpn2 description "enable openvpn plugin" {
+  configure.depends_lib-append port:openvpn2
+}
+
+# TODO verify this is correct!
+variant oracle description "enable oracle plugin" {
+  configure.depends_lib-append port:oracle-instantclient
+}
+
+variant postgresql84 description "enable postgresql plugin (postgres84)" {
+  configure.depends_lib-append port:postgresql84
+}
+
+variant snmp description "enable snmp plugin" {
+  configure.depends_lib-append port:net-snmp
+}
+
+variant hal description "enable libhal in uuid plugin" {
+  configure.depends_lib-append port:libhal
+}
+
+variant tokyotyrant description "enable tokyotyrant plugin" {
+  configure.depends_lib-append port:tokyotyrant
+}
+
+variant write_http description "enable write_http plugin" {
+  configure.depends_lib-append port:curl
+}
+
+variant xmms description "enable xmms plugin" {
+  configure.depends_lib-append port:xmms
+}
+
+# Output variants:
+
+variant rrdtool description "enable rrdtool plugin" {
+  configure.depends_lib-append port:rrdtool
+}
+
+variant notify description "enable notify plugin" {
+  configure.depends_lib-append port:libnotify
+}
+
+variant notify_email "enable notify_email plugin" {
+  configure.depends_lib-append port:libesmtp
+}
