@@ -24,6 +24,8 @@ platforms         darwin
 homepage          http://collectd.org/
 master_sites      http://collectd.org/files/
 
+use_bzip2         yes
+
 checksums         md5    5b2e5f57716f2485a3b4eb57774a3818 \
                   sha1   7a3e0b28248eb061c30221e19fee19c6ba303fb9 \
                   rmd160 225fdc708c745cf35e40e519188e8a72cc35524c
