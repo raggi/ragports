@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; indent-tabs-mode: nil
+# -*- vim:fenc=utf-8:ft=tcl:et
+# $Id$
+
+PortSystem        1.0
+
+name              collectd
+version           4.9.0
+revision          0
+
+categories        net sysutils
+maintainers       raggi
+
+description       collectd collects system performance statistics.
+long_description  collectd is a daemon which collects system performance \
+                  statistics periodically and provides mechanisms to store \
+                  the values in a variety of ways, for example in RRD files. \
+                  Those statistics can then be used to find current \
+                  performance bottlenecks (i.e. performance analysis) \
+                  and predict future system load (i.e. capacity planning).
+
+platforms         darwin
+
+homepage          http://collectd.org/
+master_sites      http://collectd.org/files/
+
+checksums         md5    5b2e5f57716f2485a3b4eb57774a3818 \
+                  sha1   7a3e0b28248eb061c30221e19fee19c6ba303fb9 \
+                  rmd160 225fdc708c745cf35e40e519188e8a72cc35524c
+
+# TODO
+# depends_lib
+# configure.args
