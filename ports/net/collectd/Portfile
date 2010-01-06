@@ -38,7 +38,7 @@ startupitem.name        ${name}
 startupitem.executable  "${prefix}/bin/${name}"
 
 post-destroot {
-  file mkdir ${destroot}${prefix}/var/lib/${name}
+  file mkdir ${prefix}/var/lib/${name}
 }
 
 variant debug description "enable debugging" {
