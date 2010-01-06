@@ -39,6 +39,11 @@ startupitem.executable  "${prefix}/bin/${name}"
 
 post-destroot {
   file mkdir ${prefix}/var/lib/${name}
+
+  foreach badfile [exec find ${destroot} -name perllocal.pod] {
+      ui_info "Removing ${badfile}"
+      file delete ${badfile}
+  }
 }
 
 variant debug description "enable debugging" {
@@ -52,104 +57,104 @@ variant nodaemon description "disable daemon" {
 # Plugin dependency variants:
 
 variant apache description "enable apache plugin" {
-  # configure.depends_lib-append port:apache2
-  configure.depends_lib-append port:curl
+  # depends_lib-append port:apache2
+  depends_lib-append port:curl
 }
 
 variant ascent description "enable ascent plugin" {
-  configure.depends_lib-append port:curl
-  configure.depends_lib-append port:libxml2
+  depends_lib-append port:curl
+  depends_lib-append port:libxml2
 }
 
 variant bind9 description "enable bind plugin" {
-  configure.depends_lib-append port:bind9
+  depends_lib-append port:bind9
 }
 
 variant curl description "enable curl plugin" {
-  configure.depends_lib-append port:curl
+  depends_lib-append port:curl
 }
 
 variant curl_json description "enable curl_json plugin" {
-  configure.depends_lib-append port:curl
-  configure.depends_lib-append port:yajl
+  depends_lib-append port:curl
+  depends_lib-append port:yajl
 }
 
 variant dbi description "enable dbi plugin" {
-  configure.depends_lib-append port:libdbi
+  depends_lib-append port:libdbi
 }
 
 variant dns description "enable dns plugin" {
-  configure.depends_lib-append port:libpcap
+  depends_lib-append port:libpcap
 }
 
 variant memcached description "enable memcached plugin" {
-  configure.depends_lib-append port:libmemcached
+  depends_lib-append port:libmemcached
 }
 
 variant mysql5 description "enable mysql plugin" {
-  configure.depends_lib-append port:mysql5
+  depends_lib-append port:mysql5
 }
 
 variant network description "enable network plugin" {
-  configure.depends_lib-append port:libgcrypt
+  depends_lib-append port:libgcrypt
 }
 
 variant nginx description "enable nginx plugin" {
-  # configure.depends_lib-append port:nginx
-  configure.depends_lib-append port:curl
+  # depends_lib-append port:nginx
+  depends_lib-append port:curl
 }
 
 variant ntpd description "enable ntpd plugin" {
-  configure.depends_lib-append port:openntpd
+  depends_lib-append port:openntpd
 }
 
 variant nut description "enable nut plugin" {
-  configure.depends_lib-append port:nut
+  depends_lib-append port:nut
 }
 
 variant openvpn2 description "enable openvpn plugin" {
-  configure.depends_lib-append port:openvpn2
+  depends_lib-append port:openvpn2
 }
 
 # TODO verify this is correct!
 variant oracle description "enable oracle plugin" {
-  configure.depends_lib-append port:oracle-instantclient
+  depends_lib-append port:oracle-instantclient
 }
 
 variant postgresql84 description "enable postgresql plugin (postgres84)" {
-  configure.depends_lib-append port:postgresql84
+  depends_lib-append port:postgresql84
 }
 
 variant snmp description "enable snmp plugin" {
-  configure.depends_lib-append port:net-snmp
+  depends_lib-append port:net-snmp
 }
 
-variant hal description "enable libhal in uuid plugin" {
-  configure.depends_lib-append port:libhal
-}
+# variant hal description "enable libhal in uuid plugin" {
+#   depends_lib-append port:libhal
+# }
 
 variant tokyotyrant description "enable tokyotyrant plugin" {
-  configure.depends_lib-append port:tokyotyrant
+  depends_lib-append port:tokyotyrant
 }
 
 variant write_http description "enable write_http plugin" {
-  configure.depends_lib-append port:curl
+  depends_lib-append port:curl
 }
 
 variant xmms description "enable xmms plugin" {
-  configure.depends_lib-append port:xmms
+  depends_lib-append port:xmms
 }
 
 # Output variants:
 
 variant rrdtool description "enable rrdtool plugin" {
-  configure.depends_lib-append port:rrdtool
+  depends_lib-append port:rrdtool
 }
 
 variant notify description "enable notify plugin" {
-  configure.depends_lib-append port:libnotify
+  depends_lib-append port:libnotify
 }
 
 variant notify_email description "enable notify_email plugin" {
-  configure.depends_lib-append port:libesmtp
+  depends_lib-append port:libesmtp
 }
