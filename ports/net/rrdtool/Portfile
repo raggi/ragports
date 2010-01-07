@@ -1,0 +1,54 @@
+# -*- coding: utf-8; mode: tcl; indent-tabs-mode: nil
+# -*- vim:fenc=utf-8:ft=tcl:et
+# $Id$
+
+PortSystem        1.0
+
+name              rrdtool
+version           1.4.2
+categories        net
+maintainers       raggi
+description       Round Robin Database
+long_description  RRDtool is a system to store and display time-series data
+homepage          http://oss.oetiker.ch/rrdtool/
+platforms         darwin
+master_sites      ${homepage}pub/
+checksums         md5     9318d3b4016dd9dd9897f1eac7548032 \
+                  sha1    d77fbeac37837e64cbe2a377acbf3e7b95b6e86e \
+                  rmd160  18d28dc0c22f28b6303898cb4555c7ed8df59937
+
+livecheck.type    regex
+livecheck.url     ${master_sites}
+livecheck.regex   {rrdtool-(\d+\.\d+\.\d+)\.tar\.gz}
+
+depends_lib       port:expat \
+                  port:pkgconfig \
+                  path:lib/pkgconfig/glib-2.0.pc:glib2 \
+                  port:libiconv \
+                  port:gettext \
+                  path:lib/pkgconfig/pango.pc:pango \
+                  path:bin/perl:perl5 \
+                  port:zlib \
+                  port:libpng \
+                  port:libxml2 \
+                  port:intltool
+#                   port:tcl
+
+use_parallel_build no
+
+# TODO variants for python and ruby!
+#                   --with-tcllib=${prefix}/lib
+configure.args    --enable-perl-site-install \
+                  --disable-python \
+                  --disable-ruby \
+                  --disable-tcl
+
+variant python description {Python bindings for RRDtool} {
+  depends_lib-append port:python24
+  configure.args-delete --disable-python
+  configure.args-append --enable-python
+}
+
+post-install {
+  ui_msg "\nSee ${prefix}/share/doc/rrdtool for example code\n"
+}
