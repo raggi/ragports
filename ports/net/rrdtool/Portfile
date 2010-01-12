@@ -27,26 +27,37 @@ depends_lib       port:expat \
                   port:libiconv \
                   port:gettext \
                   path:lib/pkgconfig/pango.pc:pango \
-                  path:bin/perl:perl5 \
                   port:zlib \
                   port:libpng \
                   port:libxml2 \
                   port:intltool
-#                   port:tcl
 
-use_parallel_build no
+# Perl requires site install to be loadable
+configure.args-append --enable-perl-site-install
 
-# TODO variants for python and ruby!
-#                   --with-tcllib=${prefix}/lib
-configure.args    --enable-perl-site-install \
-                  --disable-python \
-                  --disable-ruby \
-                  --disable-tcl
+variant perl description "Perl bindings for RRDtool" {
+  depends_lib-append port:perl5
+  configure.args-delete --disable-perl
+}
 
-variant python description {Python bindings for RRDtool} {
-  depends_lib-append port:python24
+variant ruby description "Ruby bindings for RRDtool" {
+  depends_lib-append port:ruby
+  configure.args-delete --disable-ruby
+}
+
+variant lua description "Lua bindings for RRDtool" {
+  depends_lib-append port:lua
+  configure.args-delete --disable-lua
+}
+
+variant tcl description "TCL bindings for RRDtool" {
+  depends_lib-append port:tcl
+  configure.args-delete --disable-tcl
+}
+
+variant lua description "Python bindings for RRDtool" {
+  depends_lib-append port:python25
   configure.args-delete --disable-python
-  configure.args-append --enable-python
 }
 
 post-install {

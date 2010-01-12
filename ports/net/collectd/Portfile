@@ -35,10 +35,13 @@ depends_lib       port:pkgconfig
 # TODO go for collectdmon? launchctl can do this for us, but, opinions?
 startupitem.create      yes
 startupitem.name        ${name}
-startupitem.executable  "${prefix}/bin/${name}"
+startupitem.executable  ${prefix}/sbin/${name} -f
 
 post-destroot {
   file mkdir ${prefix}/var/lib/${name}
+
+  file rename ${destroot}${prefix}/etc/collectd.conf \
+              ${destroot}${prefix}/etc/collectd.conf.sample
 
   foreach badfile [exec find ${destroot} -name perllocal.pod] {
       ui_info "Removing ${badfile}"
@@ -157,4 +160,17 @@ variant notify description "enable notify plugin" {
 
 variant notify_email description "enable notify_email plugin" {
   depends_lib-append port:libesmtp
+}
+
+# Contrib variants:
+
+variant collection3 description "install collection3 contrib" {
+  depends_lib-append port:p5-config-general
+  depends_lib-append port:p5-regexp-common
+  depends_lib-append port:p5-html-parser
+  
+  # TODO copy in collection3 contrib to share
+  # post-destroot {
+  #   
+  # }
 }
