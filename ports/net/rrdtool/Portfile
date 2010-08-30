@@ -33,7 +33,7 @@ depends_lib       port:expat \
                   port:intltool
 
 # Perl requires site install to be loadable
-configure.args-append --enable-perl-site-install
+configure.args-append --enable-perl-site-install --enable-ruby-site-install
 
 variant perl description "Perl bindings for RRDtool" {
   depends_lib-append port:perl5
@@ -55,7 +55,7 @@ variant tcl description "TCL bindings for RRDtool" {
   configure.args-delete --disable-tcl
 }
 
-variant lua description "Python bindings for RRDtool" {
+variant python description "Python bindings for RRDtool" {
   depends_lib-append port:python25
   configure.args-delete --disable-python
 }

@@ -120,6 +120,10 @@ variant gdb description "build debugging symbols" {
   configure.cflags-append -ggdb3
 }
 
+variant no_opt description "disable optimisation flags" {
+	configure.cflags-delete -O2
+}
+
 default_variants  +thread_hooks +gdb
 
 livecheck.type  regex
