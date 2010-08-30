@@ -1,0 +1,42 @@
+# -*- coding: utf-8; mode: tcl; indent-tabs-mode: nil
+# -*- vim:fenc=utf-8:ft=tcl:et
+# $Id$
+
+PortSystem        1.0
+
+name              zeromq
+version           2.0.8
+revision          1
+
+categories        net
+maintainers       raggi \
+                  gmail.com:jftucker
+
+description       Fastest. Messaging. Ever.
+long_description  ØMQ looks like an embeddable networking library but acts \
+                  like a concurrency framework. It gives you sockets that \
+                  carry whole messages across various transports like \
+                  inproc, IPC, TCP, and multicast. You can connect sockets \
+                  N-to-N with patterns like fanout, pubsub, task \
+                  distribution, and request-reply. It's fast and small \
+                  enough to be the fabric for clustered products. Its \
+                  asynchronous I/O model gives you scalable multicore \
+                  applications, built as asynchronous message-processing \
+                  tasks. It has over twenty language APIs and runs on most \
+                  operating systems. ØMQ is open source and fully supported \
+                  by iMatix.
+homepage          http://www.zeromq.org/
+
+master_sites      http://www.zeromq.org/local--files/area:download/
+
+checksums         md5     6a5c362deaaa24e0e94b42e13f68da51 \
+                  sha1    2f709e232ca3ac77320b9496de1b108d1f7124b8 \
+                  rmd160  f2673a4b709b9f8fb36fddec2fa7fb706c818162
+
+platforms         darwin
+
+livecheck.type    regex
+livecheck.url     http://www.zeromq.org/area:download
+livecheck.regex   {zeromq-(\d+\.\d+\.\d+).tar.gz}
+
+test.run          yes
