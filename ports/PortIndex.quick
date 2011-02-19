@@ -1,7 +1,7 @@
 google-perftools 0
-valgrind-raggi 611
-qstat 1233
-collectd 1666
-rrdtool 2496
-zeromq 3009
-ruby 3890
+valgrind-raggi 627
+qstat 1249
+ruby 1698
+collectd 2357
+rrdtool 3203
+zeromq 3732

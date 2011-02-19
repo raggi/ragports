@@ -5,7 +5,7 @@
 PortSystem        1.0
 
 name              ruby
-version           1.8.7-p174
+version           1.8.7-p330
 revision          1
 
 categories        lang ruby
@@ -21,9 +21,9 @@ homepage          http://www.ruby-lang.org/
 master_sites      ruby:1.8
 
 dist_subdir       ruby
-checksums         md5 88c45aaf627b4404e5e4273cb03ba2ee \
-                  rmd160 f854d456003af1e31d50330c88c3cb152c434249 \
-                  sha1 9e84b49ad545ad54b8e7dc3c227eaaefeb1041aa
+checksums         md5     2689719fb42c8cf0aa336f8c8933f413 \
+                  sha1    92a7eddcfe41f8c10013cbd8122eeb88624eb335 \
+                  rmd160  abe8eb36618e0b3d005a883d73887686177795c2
 
 use_bzip2         yes
 
@@ -38,11 +38,9 @@ depends_lib       port:libiconv \
 # vendordir: enable vendor-specific.rb
 # #3604: gcc4 fails to detect linking at configure
 # #19050: use $(CC) not cc, this change has been merged at ruby-1.8 trunk
-# #22361: Hash equivalence fails when a value is a Fixnum >= 2**29 or 2**61
-patchfiles    patch-vendordir.diff \
-              patch-bug3604.diff \
-              patch-bug19050.diff \
-              patch-bug22361.diff
+patchfiles      patch-vendordir.diff \
+                patch-bug3604.diff \
+                patch-bug19050.diff
 
 use_parallel_build    yes
 
@@ -92,11 +90,6 @@ platform darwin {
   destroot.env  DYLD_LIBRARY_PATH=${destroot}${prefix}/lib
 }
 
-platform darwin 7 {
-  # pthreads is being called with an unavailable function call
-  configure.args-delete --enable-pthread
-}
-
 variant tk conflicts mactk description "enable tk support" {
   configure.args-delete --without-tk --disable-pthread
   configure.args-append --with-tk --enable-pthread
@@ -124,7 +117,11 @@ variant no_opt description "disable optimisation flags" {
 	configure.cflags-delete -O2
 }
 
-default_variants  +thread_hooks +gdb
+variant smallopt description "use -Os for performance and gdb compat" {
+	configure.cflags-append -Os
+}
+
+default_variants  +thread_hooks +gdb +smallopt
 
 livecheck.type  regex
 livecheck.url http://ftp.ruby-lang.org/pub/ruby/1.8/
