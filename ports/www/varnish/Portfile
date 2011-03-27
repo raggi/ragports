@@ -1,0 +1,20 @@
+# $Id$
+
+PortSystem	      1.0
+
+name		      varnish
+version		      2.1.5
+categories	      www
+platforms	      darwin
+maintainers	      raggi
+
+description	      Varnish is a state-of-the-art, high-performance HTTP accelerator
+long_description  Varnish was written from the ground up to be a high \
+		      		performance caching reverse proxy.
+
+homepage	      http://www.varnish-cache.org
+master_sites	  http://repo.varnish-cache.org/source/
+
+checksums           md5     2d2f227da36a2a240c475304c717b8e3 \
+                    sha1    5c413ee7c4267d9fd4713fbff059d1be5fbba60f \
+                    rmd160  4619d4be920504388325f06afdbea9b40f5a806a

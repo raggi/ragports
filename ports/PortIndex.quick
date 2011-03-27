@@ -1,7 +1,9 @@
 google-perftools 0
 valgrind-raggi 627
 qstat 1249
-ruby 1698
-collectd 2357
-rrdtool 3203
-zeromq 3732
+ii 1698
+ruby 2164
+collectd 2823
+rrdtool 3669
+zeromq 4198
+varnish 5079
