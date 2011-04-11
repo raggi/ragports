@@ -35,27 +35,12 @@ depends_lib       port:libiconv \
                   port:zlib \
                   port:ncurses
 
-# vendordir: enable vendor-specific.rb
-# #3604: gcc4 fails to detect linking at configure
-# #19050: use $(CC) not cc, this change has been merged at ruby-1.8 trunk
-patchfiles      patch-vendordir.diff \
-                patch-bug3604.diff \
-                patch-bug19050.diff
-
-use_parallel_build    yes
+use_parallel_build    no
 
 configure.args  --enable-shared \
                 --mandir="${prefix}/share/man" \
-                --disable-pthread \
-                --without-tk \
-                --with-vendordir=${prefix}/lib/ruby/vendor_ruby
-
-# ignore minor version for archdir, like i686-darwin9
-configure.env UNAME_RELEASE=${os.major}
-
-if {![variant_isset universal] && [info exists build_arch] && $build_arch != ""} {
-  configure.env-append ARCH_FLAG="-arch ${build_arch}"
-}
+                --with-vendordir=${prefix}/lib/ruby/vendor_ruby \
+				--with-opt-dir=${prefix}
 
 destroot.target install install-doc
 post-destroot {
@@ -80,37 +65,12 @@ post-destroot {
   }
 }
 
-variant universal {
-  configure.args-delete --disable-dependency-tracking
-  build.target-append  EXTLDFLAGS="${configure.universal_ldflags}" CFLAGS="${configure.universal_cflags}" 
-}
-
-platform darwin {
-  # for proper rdoc/ri creation, make sure to link to destroot libruby.dylib
-  destroot.env  DYLD_LIBRARY_PATH=${destroot}${prefix}/lib
-}
-
-variant tk conflicts mactk description "enable tk support" {
-  configure.args-delete --without-tk --disable-pthread
-  configure.args-append --with-tk --enable-pthread
-  depends_lib-append    port:tcl port:tk
-}
-
-variant mactk conflicts tk description "enable MacTk (Tk.framework without X11) support" {
-  configure.args-delete --without-tk --disable-thread
-  configure.args-append --enable-tcltk-framework --enable-pthread
-}
-
-variant thread_hooks description "apply Apple's thread_hooks patch" {
-  patchfiles-append   patch-thread-hooks.diff
-}
-
 variant no_doc description "do not install rdoc documents" {
   destroot.target-delete  install-doc
 }
 
 variant gdb description "build debugging symbols" {
-  configure.cflags-append -ggdb3
+  configure.cflags-append -g
 }
 
 variant no_opt description "disable optimisation flags" {
@@ -121,7 +81,7 @@ variant smallopt description "use -Os for performance and gdb compat" {
 	configure.cflags-append -Os
 }
 
-default_variants  +thread_hooks +gdb +smallopt
+default_variants  +gdb
 
 livecheck.type  regex
 livecheck.url http://ftp.ruby-lang.org/pub/ruby/1.8/

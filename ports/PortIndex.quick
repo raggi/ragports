@@ -3,7 +3,7 @@ valgrind-raggi 627
 qstat 1249
 ii 1698
 ruby 2164
-collectd 2823
-rrdtool 3669
-zeromq 4198
-varnish 5079
+collectd 2801
+rrdtool 3647
+zeromq 4176
+varnish 5057
