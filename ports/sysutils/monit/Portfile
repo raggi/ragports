@@ -1,0 +1,45 @@
+# $Id$
+
+PortSystem 1.0
+
+name                monit
+version             5.2.5
+revision        	2
+categories          sysutils
+platforms           darwin freebsd linux netbsd openbsd solaris
+license             GPLv3
+maintainers         raggi
+
+description         monit is a utility for managing and monitoring, processes, \
+                    files, directories and devices on a UNIX system.
+long_description    Monit can start a process if it does not run, restart a process \
+                    if it does not respond and stop a process if it uses too many resources. \
+                    You can use monit to monitor files, directories and devices for changes, \
+                    such as timestamp changes, checksum changes or size changes. You can also \
+                    monitor remote hosts\; monit can ping a remote host and can check TCP/IP \
+                    port connections and server protocols. Monit is controlled via an easy \
+                    to use control file based on a free-format, token-oriented syntax. Monit \
+                    logs to syslog or to its own log file and notifies you about error \
+                    conditions and recovery status via customizable alert.
+
+homepage            http://mmonit.com/monit/
+master_sites        ${homepage}dist/
+
+depends_build       bin:flex:flex bin:bison:bison 
+depends_lib         port:openssl
+
+livecheck.type  regex
+livecheck.url ${master_sites}
+livecheck.regex {monit-([\d\.]+)\.tar\.gz}
+
+checksums           md5     862fb7939ad6f73fc0cc82096c2309c7 \
+                    sha1    41954b62a08663527d497084bd16d08b9a7b21bc \
+                    rmd160  68cc1ce013626da10e421303840c9c768128f015
+
+post-destroot {
+    xinstall -m 444 ${worksrcpath}/monitrc ${destroot}${prefix}/etc/monitrc.sample
+    xinstall -d ${destroot}${prefix}/share/doc/${name}
+    xinstall -m 444 -W ${worksrcpath} AUTHORS CHANGES.txt COPYING LICENSE \
+ 		PLATFORMS README README.SSL \
+        ${destroot}${prefix}/share/doc/${name}
+}

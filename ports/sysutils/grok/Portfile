@@ -1,0 +1,48 @@
+# $Id$
+
+PortSystem        1.0
+
+name              grok
+version           20110308.1
+categories        sysutils
+maintainers       raggi
+platforms         darwin
+
+description       Easily parse logs and other files.
+
+long_description  Grok is simple software that allows you to easily parse logs \
+                  and other files. You teach grok how to parse data through the \
+                  config file. Grok is a system for reacting to events - those events \
+                  being log entries.
+
+homepage          http://www.semicomplete.com/projects/grok/
+
+master_sites      http://semicomplete.googlecode.com/files/
+
+distname		  ${name}-1.${version}
+
+checksums         md5     83c274e2f0954027011149eda7d0ed95 \
+                  sha1    bd4e2d4164e700c68a42e90343dec2613322e0fc \
+                  rmd160  a564835acda7bc9df72a0d0886aac6b1ef17cc07
+
+
+depends_build     port:bison \
+                  port:flex \
+                  port:gperf \
+                  port:gmake \
+				  port:google-perftools \
+				  port:tokyocabinet \
+				  port:libevent \
+				  port:pcre
+
+depends_run       port:libevent \
+                  port:pcre
+
+use_configure     no
+
+build.type        gnu
+
+destroot.args-append PREFIX=${prefix}
+
+livecheck.url     http://code.google.com/p/semicomplete/downloads/list?q=grok&sort=-uploaded
+livecheck.regex   {grok-1\.([0-9.]+)\.tar\.gz}

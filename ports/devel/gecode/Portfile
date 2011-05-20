@@ -1,0 +1,38 @@
+# $Id$
+
+PortSystem 1.0
+
+name                gecode
+version             3.5.0
+revision            0
+categories          devel
+platforms           darwin freebsd linux netbsd openbsd solaris
+license             MIT
+maintainers         raggi
+
+description         Gecode is a toolkit for developing constraint-based \
+                    systems and applications. Gecode provides a constraint \
+                    solver with state-of-the-art performance while being \
+                    modular and extensible
+
+long_description    Gecode is a toolkit for developing constraint-based \
+                    systems and applications. Gecode provides a constraint \
+                    solver with state-of-the-art performance while being \
+                    modular and extensible
+
+homepage            http://www.gecode.org/
+master_sites        ${homepage}download/
+
+
+# depends_build       bin:flex:flex bin:bison:bison 
+# depends_lib         port:openssl
+
+livecheck.type  regex
+livecheck.url   ${master_sites}
+livecheck.regex {gecode-([\d\.]+)\.tar\.gz}
+
+checksums           md5     bb920bb708b6ef9c4e9f5fa47681a659 \
+                    sha1    c7b900e95f9a5516688454fc7450ea1d1320b409 \
+                    rmd160  1de1c67cc950eeb62104b7b8ed0ffdb8a7405ef5
+
+# http://www.gecode.org/download/gecode-3.5.0.tar.gz
