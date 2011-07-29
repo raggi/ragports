@@ -81,7 +81,11 @@ variant smallopt description "use -Os for performance and gdb compat" {
   configure.cflags-append -Os
 }
 
-default_variants  +gdb +no_opt
+variant gcc description "Explicitly use gcc rather than llvm (for Lion)" {
+  configure.compiler gcc-4.2
+}
+
+default_variants  +gdb +no_opt +gcc
 
 livecheck.type  regex
 livecheck.url http://ftp.ruby-lang.org/pub/ruby/1.8/
