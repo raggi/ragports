@@ -1,0 +1,35 @@
+# $Id$
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+name                percona-toolkit
+version             1.0.1
+perl5.setup         percona-toolkit 1.0.1
+revision            0
+categories          db
+platforms           darwin freebsd linux netbsd openbsd solaris
+license             GPLv2
+maintainers         raggi
+
+description         This toolkit is Percona’s suite of DBA and sysadmin \
+                    productivity tools for MySQL. It is the successor to \
+                    the popular Maatkit and Aspersa toolkits.
+
+long_description    Percona Toolkit is a collection of advanced command-line \
+                    tools used by Percona (http://www.percona.com/) support \
+                    staff to perform a variety of MySQL and system tasks \
+                    that are too difficult or complex to perform manually.
+
+homepage            http://www.percona.com/downloads/percona-toolkit/
+
+master_sites        http://www.percona.com/redir/downloads/percona-toolkit/
+
+depends_lib         port:p5-dbi port:p5-dbd-mysql
+
+livecheck.type      regex
+livecheck.url       ${homepage}
+livecheck.regex     {percona-toolkit-([\d\.]+)\.tar\.gz}
+
+checksums           rmd160  2621c6a011293f9af8a2cddcd224570dad30b0c6 \
+                    sha256  ec1e71c571eb92fc71ebed616eaaa08dc72c03447ded1fb2250d1000419dd1a4
