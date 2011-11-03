@@ -33,14 +33,15 @@ depends_lib       port:libiconv \
                   port:readline \
                   port:openssl \
                   port:zlib \
-                  port:ncurses
+                  port:ncurses \
+                  port:apple-gcc42
 
 use_parallel_build    no
 
 configure.args  --enable-shared \
                 --mandir="${prefix}/share/man" \
                 --with-vendordir=${prefix}/lib/ruby/vendor_ruby \
-				--with-opt-dir=${prefix}
+                --with-opt-dir=${prefix}
 
 destroot.target install install-doc
 post-destroot {
@@ -82,7 +83,7 @@ variant smallopt description "use -Os for performance and gdb compat" {
 }
 
 variant gcc description "Explicitly use gcc rather than llvm (for Lion)" {
-  configure.compiler gcc-4.2
+  configure.compiler apple-gcc-4.2
 }
 
 default_variants  +gdb +no_opt +gcc
